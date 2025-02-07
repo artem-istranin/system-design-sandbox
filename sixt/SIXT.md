@@ -21,17 +21,23 @@ We focus on this key requirements and can extend it to more requirements over ti
 ## System Requirements
 
 1. Target cloud platform is AWS.
-2. Average ... load XXX. ...
-3. Ride time and distance must be accurate (for distance it means continuous GPS location tracking).
-4. Our main target for AI model: to reach the best accuracy predictions for demand forecasting. This model takes
-   location and time as inputs and outputs number of rides for the next 30 minutes in this
-   location.
-   - System must track where and when the rides were booked.
-   - MLOps pipeline must ensure continuous model performance monitoring and improvement (Continuous Training).
+2. Ride time and distance must be accurate (for distance it means continuous GPS location tracking).
+3. Our main target for AI model: to reach the best accuracy predictions for demand forecasting. This model takes
+   location and time as inputs and outputs number of rides for the next 30 minutes (my assumption).
+    - System must track where and when the rides were booked.
+    - MLOps pipeline must ensure continuous model performance monitoring and improvement.
+
+## Capacity Estimation
+
+1. Everyone in the world takes a 1-hour ride once per week
+2. If a ride is 1-hour long, there are 24 * 7 ~ 200 slots per week
+3. The current world population is 8 billion people => 8 billion / 200 slots = 40 millions rides going on at a time
+4. If we want to track locations of 40 millions cars, it is
+   40 millions * (64-bit latitude coordinate + 64-bit longitude coordinates + 64-bit car id) ~ 1 GB
+5. 40 millions rides / 60 minutes ~ 700K requests per minute or 12K requests per second
 
 ## Design Considerations
 
 ### Cars Database
 
-We want to show to the user only relevant cars in some radius quickly after user opens our app.
-
+1. We want to show to the user only relevant cars in some radius quickly after user opens our app.
