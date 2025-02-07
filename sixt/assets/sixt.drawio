@@ -1,0 +1,31 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.9 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="26.0.9">
+  <diagram name="Page-1" id="sCHedO5sb3NCKmZcauj-">
+    <mxGraphModel dx="714" dy="904" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="8ZHCsgr2ZFnfIaSW6EkA-1" value="User" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="260" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8ZHCsgr2ZFnfIaSW6EkA-2" value="Cars DB" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="480" y="150" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="8ZHCsgr2ZFnfIaSW6EkA-3" value="Users DB" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="120" y="120" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="8ZHCsgr2ZFnfIaSW6EkA-4" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="200" y="30" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="8ZHCsgr2ZFnfIaSW6EkA-5" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="70" y="30" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="8ZHCsgr2ZFnfIaSW6EkA-6" value="Car Tracking&lt;div&gt;(GPS)&lt;/div&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;" vertex="1" parent="1">
+          <mxGeometry x="450" y="334" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="8ZHCsgr2ZFnfIaSW6EkA-7" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=12;startSize=8;endSize=8;" edge="1" parent="1" source="8ZHCsgr2ZFnfIaSW6EkA-6" target="8ZHCsgr2ZFnfIaSW6EkA-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
