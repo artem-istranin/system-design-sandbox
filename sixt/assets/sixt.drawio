@@ -1,29 +1,135 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.9 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="26.0.9">
-  <diagram name="Page-1" id="sCHedO5sb3NCKmZcauj-">
-    <mxGraphModel dx="714" dy="904" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+  <diagram name="system-design" id="sCHedO5sb3NCKmZcauj-">
+    <mxGraphModel dx="1195" dy="753" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="8ZHCsgr2ZFnfIaSW6EkA-1" value="User" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
-          <mxGeometry x="40" y="260" width="30" height="60" as="geometry" />
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-47" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;" edge="1" parent="1" target="_iEUixfp2Sc_URdPPxYn-12">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="60" y="350" as="sourcePoint" />
+          </mxGeometry>
         </mxCell>
-        <mxCell id="8ZHCsgr2ZFnfIaSW6EkA-2" value="Cars DB" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
-          <mxGeometry x="480" y="150" width="60" height="80" as="geometry" />
+        <mxCell id="8ZHCsgr2ZFnfIaSW6EkA-1" value="User" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
+          <mxGeometry x="20" y="310" width="30" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="8ZHCsgr2ZFnfIaSW6EkA-3" value="Users DB" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
-          <mxGeometry x="120" y="120" width="60" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="8ZHCsgr2ZFnfIaSW6EkA-4" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
-          <mxGeometry x="200" y="30" width="60" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="8ZHCsgr2ZFnfIaSW6EkA-5" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
-          <mxGeometry x="70" y="30" width="60" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="8ZHCsgr2ZFnfIaSW6EkA-6" value="Car Tracking&lt;div&gt;(GPS)&lt;/div&gt;" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;" vertex="1" parent="1">
-          <mxGeometry x="450" y="334" width="120" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="8ZHCsgr2ZFnfIaSW6EkA-7" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=12;startSize=8;endSize=8;" edge="1" parent="1" source="8ZHCsgr2ZFnfIaSW6EkA-6" target="8ZHCsgr2ZFnfIaSW6EkA-2">
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-4" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;" edge="1" parent="1" source="_iEUixfp2Sc_URdPPxYn-2" target="_iEUixfp2Sc_URdPPxYn-3">
           <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-2" value="Car" style="shape=mxgraph.signs.transportation.car_4;html=1;pointerEvents=1;fillColor=#FFFFFF;strokeColor=#000000;verticalLabelPosition=bottom;verticalAlign=top;align=center;" vertex="1" parent="1">
+          <mxGeometry x="797.5" y="457.5" width="74.54" height="62.5" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-3" value="Car sensors" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="794.77" y="320" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-6" value="Car State Tracking Service" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;" vertex="1" parent="1">
+          <mxGeometry x="585" y="310" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-7" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0;entryDx=120;entryDy=50;entryPerimeter=0;fontSize=12;startSize=8;endSize=8;" edge="1" parent="1" source="_iEUixfp2Sc_URdPPxYn-3" target="_iEUixfp2Sc_URdPPxYn-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-8" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="_iEUixfp2Sc_URdPPxYn-6" target="_iEUixfp2Sc_URdPPxYn-9">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="595" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-12" value="Load Balancer" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="110" y="320" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-21" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;" edge="1" parent="1" source="_iEUixfp2Sc_URdPPxYn-13" target="_iEUixfp2Sc_URdPPxYn-20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-13" value="Car Booking Service" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;" vertex="1" parent="1">
+          <mxGeometry x="290" y="310" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-14" value="&lt;div&gt;get cars nearby (read)&lt;/div&gt;lock car for ride (write)&lt;div&gt;finish ride (write)&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=12;startSize=8;endSize=8;startArrow=none;startFill=0;" edge="1" parent="1" source="_iEUixfp2Sc_URdPPxYn-13" target="8ZHCsgr2ZFnfIaSW6EkA-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-15" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;entryX=-0.025;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="_iEUixfp2Sc_URdPPxYn-12" target="_iEUixfp2Sc_URdPPxYn-13">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="280" y="340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-22" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="_iEUixfp2Sc_URdPPxYn-18" target="_iEUixfp2Sc_URdPPxYn-49">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-18" value="Price Estimation Service" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;" vertex="1" parent="1">
+          <mxGeometry x="290" y="767" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-20" value="Location:Prices DB" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="290" y="577.5" width="120" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-23" value="Prices Cache&lt;div&gt;(Redis)&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="310" y="440" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-24" value="" style="endArrow=classic;html=1;rounded=0;fontSize=12;startSize=8;endSize=8;curved=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" target="_iEUixfp2Sc_URdPPxYn-23">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="370" y="577" as="sourcePoint" />
+            <mxPoint x="440" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-25" value="Changes Capture" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="380" y="527.5" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-28" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="585" y="90" width="120" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="8ZHCsgr2ZFnfIaSW6EkA-2" value="Cars DB" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" parent="_iEUixfp2Sc_URdPPxYn-28" vertex="1">
+          <mxGeometry width="120" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-9" value="PostgreSQL" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="_iEUixfp2Sc_URdPPxYn-28">
+          <mxGeometry x="30" y="110" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-31" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;entryX=0;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=1;exitDx=0;exitDy=-15;exitPerimeter=0;" edge="1" parent="1" source="_iEUixfp2Sc_URdPPxYn-10" target="_iEUixfp2Sc_URdPPxYn-18">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="290" y="750" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-32" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="150" y="500" width="120" height="195" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-27" value="" style="group" vertex="1" connectable="0" parent="_iEUixfp2Sc_URdPPxYn-32">
+          <mxGeometry x="-60" y="75" width="120" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-10" value="Users DB" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="_iEUixfp2Sc_URdPPxYn-27">
+          <mxGeometry width="120" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-11" value="PostgreSQL" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="_iEUixfp2Sc_URdPPxYn-27">
+          <mxGeometry x="30" y="110" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-38" value="Ride Tracking Service" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;" vertex="1" parent="1">
+          <mxGeometry x="585" y="430" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-39" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0.013;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=12;startSize=8;endSize=8;" edge="1" parent="1" source="_iEUixfp2Sc_URdPPxYn-6" target="_iEUixfp2Sc_URdPPxYn-38">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-41" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=12;startSize=8;endSize=8;" edge="1" parent="1" source="_iEUixfp2Sc_URdPPxYn-38" target="_iEUixfp2Sc_URdPPxYn-33">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-42" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.145;entryY=0;entryDx=0;entryDy=4.35;entryPerimeter=0;fontSize=12;startSize=8;endSize=8;exitX=1;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;startArrow=none;startFill=0;" edge="1" parent="1" source="_iEUixfp2Sc_URdPPxYn-13" target="_iEUixfp2Sc_URdPPxYn-33">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-44" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.855;entryY=0;entryDx=0;entryDy=4.35;entryPerimeter=0;fontSize=12;startSize=8;endSize=8;exitX=0;exitY=0;exitDx=20;exitDy=80;exitPerimeter=0;startArrow=none;startFill=0;" edge="1" parent="1" source="_iEUixfp2Sc_URdPPxYn-13" target="_iEUixfp2Sc_URdPPxYn-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-49" value="PostgreSQL" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="320" y="687.5" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0;entryDx=120;entryDy=50;entryPerimeter=0;fontSize=12;startSize=8;endSize=8;" edge="1" parent="1" source="8ZHCsgr2ZFnfIaSW6EkA-2" target="_iEUixfp2Sc_URdPPxYn-18">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="920" y="145" />
+              <mxPoint x="920" y="817" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-55" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="585" y="577.5" width="120" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-33" value="Rides DB" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="_iEUixfp2Sc_URdPPxYn-55">
+          <mxGeometry width="120" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-48" value="PostgreSQL" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="_iEUixfp2Sc_URdPPxYn-55">
+          <mxGeometry x="30" y="110" width="60" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

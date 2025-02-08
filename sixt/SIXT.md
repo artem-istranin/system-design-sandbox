@@ -11,12 +11,10 @@ In this system design we focus on the **SIXT share** (car sharing) app design.
 
 1. User should see all closest vehicles on the map.
 2. Before renting the car, user should see the price per minute of car renting.
-3. Prices are dynamic and depend on demand (we assume AI multiplier depending on the predicted traffic in the area),
+3. Prices are dynamic and depend on demand (we assume price multiplier depending on the predicted traffic in the area),
    number of available cars in the area and location.
 4. Once user accepts renting a car no other user is allowed to rend the same car until it is returned.
 5. At the end of the road user pays based on time and ride distance.
-
-We focus on this key requirements and can extend it to more requirements over time.
 
 ## System Requirements
 
@@ -29,15 +27,17 @@ We focus on this key requirements and can extend it to more requirements over ti
 
 ## Capacity Estimation
 
-1. Everyone in the world takes a 1-hour ride once per week
-2. If a ride is 1-hour long, there are 24 * 7 ~ 200 slots per week
-3. The current world population is 8 billion people => 8 billion / 200 slots = 40 millions rides going on at a time
+1. Everyone in the world takes a 1-hour ride once per week.
+2. If a ride is 1-hour long, there are 24 * 7 ~ 200 slots per week.
+3. The current world population is 8 billion people => 8 billion / 200 slots = 40 millions rides going on at a time.
 4. If we want to track locations of 40 millions cars, it is
-   40 millions * (64-bit latitude coordinate + 64-bit longitude coordinates + 64-bit car id) ~ 1 GB
-5. 40 millions rides / 60 minutes ~ 700K requests per minute or 12K requests per second
+   40 millions * (64-bit latitude coordinate + 64-bit longitude coordinates + 64-bit car id) ~ 1 GB.
+5. 40 millions rides / 60 minutes ~ 700K requests per minute or 12K requests per second.
 
 ## Design Considerations
 
-### Cars Database
 
-1. We want to show to the user only relevant cars in some radius quickly after user opens our app.
+
+## Final Design Graph
+
+![sixt.drawio.png](assets/sixt.drawio.png)
