@@ -79,7 +79,7 @@
         <mxCell id="_iEUixfp2Sc_URdPPxYn-9" value="PostgreSQL" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="_iEUixfp2Sc_URdPPxYn-28">
           <mxGeometry x="30" y="110" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="_iEUixfp2Sc_URdPPxYn-31" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;entryX=0;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=1;exitDx=0;exitDy=-15;exitPerimeter=0;" edge="1" parent="1" source="_iEUixfp2Sc_URdPPxYn-10" target="_iEUixfp2Sc_URdPPxYn-18">
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-31" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;entryX=0;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=1;exitDx=0;exitDy=-15;exitPerimeter=0;startArrow=classic;startFill=1;endArrow=none;" edge="1" parent="1" source="_iEUixfp2Sc_URdPPxYn-10" target="_iEUixfp2Sc_URdPPxYn-18">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="290" y="750" as="targetPoint" />
           </mxGeometry>
@@ -114,7 +114,7 @@
         <mxCell id="_iEUixfp2Sc_URdPPxYn-49" value="PostgreSQL" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="320" y="687.5" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="_iEUixfp2Sc_URdPPxYn-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0;entryDx=120;entryDy=50;entryPerimeter=0;fontSize=12;startSize=8;endSize=8;" edge="1" parent="1" source="8ZHCsgr2ZFnfIaSW6EkA-2" target="_iEUixfp2Sc_URdPPxYn-18">
+        <mxCell id="_iEUixfp2Sc_URdPPxYn-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0;entryDx=120;entryDy=50;entryPerimeter=0;fontSize=12;startSize=8;endSize=8;endArrow=none;startFill=1;startArrow=classic;" edge="1" parent="1" source="8ZHCsgr2ZFnfIaSW6EkA-2" target="_iEUixfp2Sc_URdPPxYn-18">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="920" y="145" />
