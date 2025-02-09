@@ -20,8 +20,9 @@ In this system design we focus on the **SIXT share** (car sharing) app design.
 
 1. Target cloud platform is AWS.
 2. Ride time and distance must be accurate (for distance it means continuous GPS location tracking).
-3. Our main target for AI model: to reach the best accuracy predictions for demand forecasting. This model takes
-   location and time as inputs and outputs number of rides for the next 30 minutes (my assumption).
+3. Our main goal for the AI model is to achieve the highest accuracy in demand forecasting. For the inference
+   (on the API level) this model takes location and day as main inputs for the inference and outputs the number of rides
+   per hour for the next day.
     - System must track where and when the rides were booked.
     - MLOps pipeline must ensure continuous model performance monitoring and improvement.
 
@@ -64,6 +65,40 @@ In this system design we focus on the **SIXT share** (car sharing) app design.
 1. In order to track ride distance accurately, we collect real-time updates from gps trackers on the car and aggregate
    total distance in the Rides database.
 2. We ensure that processing of the total distance is reliable and scalable by using Kafka queues.
+
+### Demand Prediction Model
+
+1. Our labels are the number of rides in the given location from the past. We get this data directly from our Rides DB
+   which stores time and location of the ride start.
+2. Our main input features are encoded location and time.
+3. We deal with time series. Do we expect seasonality? Yes, demand on the cars will definitely depend on the hour, day
+   of week and month of year. So, we do have seasonality trends (seasonal variation).
+3. Also, we consider that our system will be more robust with
+   multiple different extra features, e.g. predicted weather and expected events (we can engineer these features from
+   the third-party sources).
+3. The input data can be represented as following:
+    - Hour of Day: `hour_sin = sin(2 * pi * (hour / 24))` and `hour_cos = cos(2 * pi * (hour / 24))`
+    - Day of Week: `dow_sin = sin(2 * pi * (dow / 7))` and `dow_cos = cos(2 * pi * (dow / 7))`
+    - Month of Year: `month_sin = sin(2 * pi * (month / 7))` and `month_cos = cos(2 * pi * (month / 7))`
+3. Auto-regressive trend (company is growing, getting more popular)
+4. How to normalize data?
+
+### Data Cleaning
+
+1. Which problems with the data can we expect?
+    - Our targets are not 100% reliable, because number of rides also depends on number of available cars in the area.
+      If all cars in the area were booked (or no cars are available), then our rides DB will not contain more rides than
+      there were cars in this
+      area. TODO: how to consider this?
+
+### New Region Problem
+
+1. How do we start predicting demand in a completely new area (without historical data in this area)?
+
+### Data Split
+
+1. Training data: auto-regressive windows
+2. Test data: last 7 days in every location OR time-wise cross validation (last 7 days, last month, last 6 months)
 
 ## Final Design Graph
 
