@@ -88,8 +88,7 @@ In this system design we focus on the **SIXT share** (car sharing) app design.
 1. Which problems with the data can we expect?
     - Our targets are not 100% reliable, because number of rides also depends on number of available cars in the area.
       If all cars in the area were booked (or no cars are available), then our rides DB will not contain more rides than
-      there were cars in this
-      area. TODO: how to consider this?
+      there were cars in this area. How to consider this?
 
 ### New Region Problem
 
