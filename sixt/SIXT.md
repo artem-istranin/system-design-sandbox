@@ -140,12 +140,11 @@ In this system design we focus on the **SIXT share** (car sharing) app design.
       for already large-scale app. Therefore, I would go with AWS EKS (Kubernetes) even though deployment complexity is
       high. As a note, next best alternative would be AWS Fargate Elastic Container Service (ECS). If we design a
       startup MVP, I would go with AWS App Runner for easiest fully managed solution.
-3. For Cars/Users/Prices databases, we will use Postgres SQL as discussed earlier, which we run on AWS RDS, since we
-   need strong consistency and ACID transactions for booking the cars and CDC (Change Data Capture) for updating the
-   data. If we will be interested in optimizing database for lower latency and higher scalability we can go with AWS
-   Aurora, but for now I decide on AWS RDS.
-4. For User Sessions database, I can imagine using Dynamo DB for logging user sessions, where write throughput and
-   scalability is more important than read latency and, it doesn't need to be relational database.
+3. For Cars/Users/Prices/Rides databases, we will use Postgres SQL as discussed earlier, which we run on Amazon Aurora, since
+   we need strong consistency, ACID transactions for booking the cars and CDC (Change Data Capture) for updating the
+   data.
+4. For User Sessions database, I would prefer using Dynamo DB for logging user sessions, where write throughput and
+   scalability is more important than read latency and, it doesn't need to be strongly relational database.
 
 ## Final Design Graph
 
