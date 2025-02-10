@@ -107,9 +107,23 @@ In this system design we focus on the **SIXT share** (car sharing) app design.
 
 ## MLOps Workflow Graph
 
-1. We deploy model into the production used by Price Estimation Service.
+1. Following our design considerations so far, we consider ingesting data from User Sessions DB for training and
+   inference (also for inference because of the lagging features). We can trigger re-training model automatically every
+   time when there is new data available. For I suggest implementing MLOps pipelines using
+   ZenML (e.g., with Kubernetes orchestrator), with MLflow for experiments tracking and Apache Spark for efficient batch
+   processing of large datasets during preprocessing and feature engineering.
+2. We deploy model into the production used by Price Estimation Service. Based on our design, AI model inference
+   pipeline must be able to access user sessions data from yesterday in order to calculate lagging features.
+3. We will re-evaluate models daily as we get data from the last 24 hours. So, we can detect model performance
+   degradation based on re-evaluation results. We automate monitoring with ZenML pipeline.
+4. We can optionally utilize Evidently AI library to detect data drift and feature drift to trigger model re-training
+   even if evaluation metrics of the current production model doesn't indicate about the performance degradation.
+5. If we need, we can visualize system metrics over the past weeks in the Streamlit dashboard to have a custom and
+   interactive visualization of our system performance.
 
-## System Design Graph
+![sixt-mlops-and-api.drawio.png](assets/sixt-mlops-and-api.drawio.png)
+
+## Final Design Graph
 
 ![sixt.drawio.png](assets/sixt-system-design.drawio.png)
 
