@@ -15,6 +15,8 @@ In this system design we focus on the **SIXT share** (car sharing) app design.
 4. Once user accepts renting a car no other user is allowed to rend the same car until it is returned.
 5. At the end of the road user pays based on time and ride distance.
 6. Every car sends data about gps location every 3 seconds.
+7. The SIXT share office needs to know the optimal number of car allocations for each hour of the following day to
+   efficiently plan to relocate vehicles from low-demand areas to high-demand areas.
 
 ## System Requirements
 
@@ -22,9 +24,8 @@ In this system design we focus on the **SIXT share** (car sharing) app design.
 2. Ride time and distance must be accurate (for distance it means continuous GPS location tracking).
 3. Our main goal for the AI model is to achieve the highest accuracy in demand forecasting. For the inference
    (on the API level) this model takes location and day as main inputs for the inference and outputs the most likely
-   locations for start of new rides per hour for the next day.
-    - System must track where and when the rides were booked.
-    - MLOps pipeline must ensure continuous model performance monitoring and improvement.
+   locations for start of new rides per hour for the next day. MLOps pipeline must ensure continuous model performance
+   monitoring and improvement.
 
 ## Design Considerations
 
