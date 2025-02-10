@@ -103,9 +103,15 @@ In this system design we focus on the **SIXT share** (car sharing) app design.
     - Over time, we track user sessions and know if they are looking for a ride in some location. So, even if our
       initial distribution is not optimal - we will quickly adapt.
 
-## Final Design Graph
+![sixt-demand-prediction-model.drawio.png](assets/sixt-demand-prediction-model.drawio.png)
 
-![sixt.drawio.png](assets/sixt.drawio.png)
+## MLOps Workflow Graph
+
+1. We deploy model into the production used by Price Estimation Service.
+
+## System Design Graph
+
+![sixt.drawio.png](assets/sixt-system-design.drawio.png)
 
 ## References
 
