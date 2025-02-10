@@ -32,7 +32,7 @@ In this system design we focus on the **SIXT share** (car sharing) app design.
 ### Finding a car
 
 1. In order to quickly find cars in say 1 km radius, I would suggest to use geospatial indexing for all stationary
-   cars (that are not currently booked for a ride). This is done by encoding the latitude and longitude into the score
+   cars (that are currently not booked for a ride). This is done by encoding the latitude and longitude into the score
    of the sorted set using the geohash algorithm.
 2. Which database to use? It critical to ensure the consistent status and of every car, when users will book the cars
    for the ride. Therefore, we can't go with multi-leader or leaderless replication databases
@@ -48,8 +48,8 @@ In this system design we focus on the **SIXT share** (car sharing) app design.
           in each region.
 3. We expect user to spend up to 5 minutes in the app before booking a car or closing the app. During this time we
    have to provide good user experience and continue showing available cars and stop showing already booked cars.
-   Therefore, we cache available cars in the car booking service and use change data capture in order to updatae list of
-   available cars if some cars got booked or were returned are now available for new booking.
+   Therefore, we cache available cars in the car booking service and use change data capture in order to update list of
+   available cars if some cars got booked or got available for new ride.
 4. In order to prevent multiple users booking the same car successfully we will use PostgreSQL row-level locks.
 
 ### Tracking a ride distance
@@ -61,17 +61,19 @@ In this system design we focus on the **SIXT share** (car sharing) app design.
 ### Demand Prediction Model
 
 1. What is the main purpose of this model? In order to solve the given business task I formulate the problem statement
-   as following: To predict a **heatmap** of where and when we expect the most bookings of the
+   as following: predict a **heatmap** of where and when we expect the most bookings of the
    rides to happen to avoid the scenario when at demand hotspots we don't have enough cars. For example, if we expect
    start of summer holidays we will want to allocate enough cars close to airports so that families arriving for the
    vacation would have enough cars to book. Or, if there is a big sport even in a city - we want to allocate enough cars
-   close to the football stadion to ensure that all football fans will be able to take our cars for car sharing.
+   close to the football stadion to ensure that all football fans will be able to take our cars for car sharing after
+   game.
 2. Model inputs: encoded location and time (daily, weekly, monthly seasonality to expect - Fourier features). Also, we
    will have to consider multiple different extra features, e.g. predicted weather, expected events, region population,
    public transport accessibility, active ad campaigns in this location like posters or SIXT office (we can engineer
    these features from the third-party sources).
 3. Model outputs: optimal number of cars allocation tomorrow within selected region (e.g. Munich region grid divided by
-   1 km spatial grid). Not clear yet how exactly to represent the target data.
+   1 km spatial grid). Not clear yet how exactly to represent the target data - we address this question in the next
+   point.
 4. What is our data source for training and evaluation of the AI models? We can get information about ride start time
    and location from Rides DB and optimize model to predict absolute number of rides per area within a region.
     - Do we have some problems when designing the model to predict this target? I tend to say yes - there are problems:
@@ -80,20 +82,20 @@ In this system design we focus on the **SIXT share** (car sharing) app design.
       area are taken), then our model will learn that there was no interest in car sharing at this time (=wrong
       target). Can we do better? Yes. If we log all user sessions with location and optimize model to predict number
       of users looking for a ride instead of number of rides taken. With this design, our system is not restricted by
-      number of available cars in this area. Of course the risk is that not all users looking for a ride will actually
-      take the car, but I think it is still reasonable (in the scenario of car-sharing service) to target that we want
-      all users in a system to be able to book a ride. So, we go with this approach as the most reasonable from the
-      business point of view.
+      number of available cars in this area. Of course the risk to be too positive - not all users looking for a ride
+      will actually take the car, but I think it is still reasonable (in the scenario of car-sharing service) to target
+      that we want all users in a system to be able to book a ride. So, we go with this approach as the most reasonable
+      from the business point of view.
     - Assuming that from now on we will predict number of users looking for a ride, there is another problem I would
       expect - absolute number of users to predict might be not optimal. First, our model will have to capture all the
-      non-homogeneous trends to scale predictions properly (e.g. it is nearly impossible to know the expected numer of
-      guests from other regions for some coming event). The trends might be hard to predict in terms of absolute
+      non-homogeneous trends to scale predictions properly. The trends might be hard to predict in terms of absolute
       numbers. Can we do better? Yes, we can predict normalized demand density heatmap. This will be a valid design
-      considering that we want to optimize cars allocation within a region and will have certain
-      (not-elastic = we can't quickly double the amount of available cars in the city when needed) number of vehicles in
-      a region. For practical purposes (we still want to know how many cars we want to allocate when) we can simply
-      multiply number of available cars in the region by the predicted normalized heatmap to know the optimal
-      allocation of the cars. If we want to optimize service on the global level (assuming that periodically, say once
+      considering that we want to optimize cars allocation within a region and will have certain not-elastic
+      (=we can't quickly double the amount of available cars in the city when needed) number of vehicles in
+      a region. Thus, for practical purposes (we still want to know how many cars we want to allocate when) we can
+      simply multiply number of available cars in the region by the predicted normalized heatmap to know the optimal
+      allocation of the cars.
+    - If we want to optimize service on the global level (assuming that periodically, say once
       per month, our employees will have to relocate cars between the regions, e.g. between Berlin and Potsdam), then we
       can use the same demand density heatmap strategy on the global level (where we predict normalized demand
       distribution among regions instead of areas of the same region). So, I see it as a valid design and think we
@@ -110,10 +112,10 @@ In this system design we focus on the **SIXT share** (car sharing) app design.
 
 1. Following our design considerations so far, we consider ingesting data from User Sessions DB for training and
    inference (also for inference because of the lagging features). We can trigger re-training model automatically every
-   time when there is new data available. For I suggest implementing MLOps pipelines using
+   time when there is new data available. I suggest implementing MLOps pipelines using
    ZenML (e.g., with Kubernetes orchestrator), with MLflow for experiments tracking and Apache Spark for efficient batch
    processing of large datasets during preprocessing and feature engineering.
-2. We deploy model into the production used by Price Estimation Service. Based on our design, AI model inference
+2. We deploy model into the production for Price Estimation Service. Based on our design, AI model inference
    pipeline must be able to access user sessions data from yesterday in order to calculate lagging features.
 3. We will re-evaluate models daily as we get data from the last 24 hours. So, we can detect model performance
    degradation based on re-evaluation results. We automate monitoring with ZenML pipeline.
