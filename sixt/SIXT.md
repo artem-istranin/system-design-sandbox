@@ -126,7 +126,7 @@ In this system design we focus on the **SIXT share** (car sharing) app design.
 
 ![sixt-mlops-and-api.drawio.png](assets/sixt-mlops-and-api.drawio.png)
 
-## AWS Services
+## AWS Components
 
 1. We will aim to run our product services inside a containers, what gives us the full control and makes scaling
    straightforward.
@@ -140,11 +140,15 @@ In this system design we focus on the **SIXT share** (car sharing) app design.
       for already large-scale app. Therefore, I would go with AWS EKS (Kubernetes) even though deployment complexity is
       high. As a note, next best alternative would be AWS Fargate Elastic Container Service (ECS). If we design a
       startup MVP, I would go with AWS App Runner for easiest fully managed solution.
-3. For Cars/Users/Prices/Rides databases, we will use Postgres SQL as discussed earlier, which we run on Amazon Aurora, since
+3. For Cars/Users/Prices/Rides databases, we will use Postgres SQL as discussed earlier, which we run on Amazon Aurora,
+   since
    we need strong consistency, ACID transactions for booking the cars and CDC (Change Data Capture) for updating the
    data.
 4. For User Sessions database, I would prefer using Dynamo DB for logging user sessions, where write throughput and
    scalability is more important than read latency and, it doesn't need to be strongly relational database.
+5. For MLOps, we are already using EKS, it makes sense to keep ZenML orchestration inside EKS rather than using AWS EMR
+   or SageMaker. For large datasets - we can run Apache Spark on EKS. We will use MLflow Tracking and Model Registry +
+   Feast feature store as it is natively supported in ZenML. Finally, we use Seldon Core to deploy AI models.
 
 ## Final Design Graph
 
