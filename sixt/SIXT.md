@@ -126,6 +126,30 @@ In this system design we focus on the **SIXT share** (car sharing) app design.
 
 ![sixt-mlops-and-api.drawio.png](assets/sixt-mlops-and-api.drawio.png)
 
+## AWS Components
+
+1. We will aim to run our product services inside a containers, what gives us the full control and makes scaling
+   straightforward.
+2. Let's start with Car Booking Service which is the central user API, where user can see, book, finish and pay rides.
+    - Maybe first question to ask: do we need websocket for a car booking service? Even though multiple sources I read
+      suggest this as a good practise, I don't see a strong need in establishing a websocket connection with users,
+      because some reasonable delay in signals for booking or returning a car doesn't have a very significant impact on
+      the user experience from my point of view in our case.
+    - Considering that we are probably okay just to have a normal REST API for communication with user, I would suggest
+      to implement Car Booking Service with FastAPI. Speed and scalability is critical here and, we make system design
+      for already large-scale app. Therefore, I would go with AWS EKS (Kubernetes) even though deployment complexity is
+      high. As a note, next best alternative would be AWS Fargate Elastic Container Service (ECS). If we design a
+      startup MVP, I would go with AWS App Runner for easiest fully managed solution.
+3. For Cars/Users/Prices/Rides databases, we will use Postgres SQL as discussed earlier, which we run on Amazon Aurora,
+   since
+   we need strong consistency, ACID transactions for booking the cars and CDC (Change Data Capture) for updating the
+   data.
+4. For User Sessions database, I would prefer using Dynamo DB for logging user sessions, where write throughput and
+   scalability is more important than read latency and, it doesn't need to be strongly relational database.
+5. For MLOps, we are already using EKS, it makes sense to keep ZenML orchestration inside EKS rather than using AWS EMR
+   or SageMaker. For large datasets - we can run Apache Spark on EKS. We will use MLflow Tracking and Model Registry +
+   Feast feature store as it is natively supported in ZenML. Finally, we use Seldon Core to deploy AI models.
+
 ## Final Design Graph
 
 ![sixt.drawio.png](assets/sixt-system-design.drawio.png)
