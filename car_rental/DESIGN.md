@@ -1,7 +1,5 @@
 # Functional Requirements
 
-Based on the case study task, I focus on the following requirements:
-
 1. We optimize MLOps architecture for car rental services.
 2. Our system has to maintain the following examples of services:
     - Machine Learning Models
