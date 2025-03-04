@@ -33,7 +33,8 @@
 
 1. Target Cloud provider is AWS.
 2. Current architecture already uses Terraform, Kubernetes and Airflow.
-3. Final infrastructure design has to consider scalability, stress testing, monitoring, traceability, logging, and other
+3. Target company already has mature MLOps practises implemented.
+4. Final infrastructure design has to consider scalability, stress testing, monitoring, traceability, logging, and other
    necessary operational requirements.
 
 # Design Considerations
