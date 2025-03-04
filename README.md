@@ -1,4 +1,4 @@
 # System Design Sandbox
 
-- [Car Sharing (System Design + Supply Allocation Model)](sixt/SIXT.md)
-- [Car Rental (Advanced MLOps architecture & Implementation Roadmap)](car_rental/DESIGN.md)
+- [Car Sharing (System Design + Supply Allocation Model)](car-sharing/DESIGN.md)
+- [Car Rental (Advanced MLOps architecture & Implementation Roadmap)](car-rental/DESIGN.md)
