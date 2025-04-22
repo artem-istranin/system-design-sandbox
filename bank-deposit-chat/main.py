@@ -195,9 +195,12 @@ if __name__ == '__main__':
     graph = graph_builder.compile(checkpointer=memory)
 
     # --------------- Visualize workflow ----------------
-    # png_bytes = graph.get_graph().draw_mermaid_png()
-    # with open("graph.png", "wb") as f:
-    #     f.write(png_bytes)
+    try:
+        png_bytes = graph.get_graph().draw_mermaid_png()
+        with open("graph.png", "wb") as f:
+            f.write(png_bytes)
+    except Exception:
+        print('Failed to draw workflow graph, skip it')
 
     # --------------- Start test conversation ----------------
     config = {"configurable": {"thread_id": time.strftime('%Y%m%d_%H%M%S')}}
