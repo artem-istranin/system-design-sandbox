@@ -38,7 +38,7 @@ def chatbot(state: State):
 
 class DepositConditions(BaseModel):
     deposit_amount: int = Field(
-        description="Amount of money user would like to allocate for a deposit in RUB. "
+        description="Amount of money user would like to allocate for a deposit in EUR. "
                     "Set amount value to -1 if user didn't tell it yet."
     )
     deposit_duration: int = Field(
@@ -63,15 +63,16 @@ def extract_amount_and_duration(state: State):
         is_deposit_duration_provided = True
 
     if is_deposit_amount_provided and is_deposit_duration_provided:
-        msg = (f'Понятно, размещение {deposit_cond_check.deposit_amount} рублей сроком '
-               f'на {deposit_cond_check.deposit_duration} дней. '
-               f'Пожалуйста, подтвердите корректрость данных или скорректируйте.')
+        msg = (f'Understood, deposit amount of {deposit_cond_check.deposit_amount} euros '
+               f'for {deposit_cond_check.deposit_duration} days. '
+               f'Please confirm the correctness of the data or adjust it.')
     elif is_deposit_amount_provided and not is_deposit_duration_provided:
-        msg = (f'Уточните, пожалуйста, на какой срок хотели бы разместить {deposit_cond_check.deposit_amount} рублей.')
+        msg = f'Please specify the duration for the deposit amount of {deposit_cond_check.deposit_amount} euros.'
     elif not is_deposit_amount_provided and is_deposit_duration_provided:
-        msg = (f'Уточните, пожалуйста, какую сумму хотели бы разместить на {deposit_cond_check.deposit_duration} дней.')
+        msg = f'Please specify the amount you would like to deposit for {deposit_cond_check.deposit_duration} days.'
     else:
-        msg = (f'Уточните, пожалуйста, сумму и срок для размещения депозита.')
+        msg = f'Please specify the amount and duration for the deposit.'
+
     extraction_res["messages"] = [AIMessage(msg)]
 
     return Command(update=extraction_res)
@@ -89,20 +90,21 @@ def confirm_amount_and_duration(state: State):
 
     human_response = interrupt(
         {
-            "question": "Пожалуйста, проверьте корректрость суммы и срока депозита.",
+            "question": "Please verify the correctness of the deposit amount and duration.",
             "deposit_amount": deposit_amount,
             "deposit_duration": deposit_duration,
             "name": "confirm_amount_and_duration",
         },
     )
+
     if human_response.get("correct", "").lower().startswith("y"):
         verified_deposit_amount = deposit_amount
         verified_deposit_duration = deposit_duration
-        response = "Клиент подтвердил корректность данных."
+        response = "The client confirmed the correctness of the data."
     else:
         verified_deposit_amount = human_response.get("deposit_amount", deposit_amount)
         verified_deposit_duration = human_response.get("deposit_duration", deposit_duration)
-        response = f"Клиент скорректировал данные: {human_response}."
+        response = f"The client adjusted the data: {human_response}."
 
     msg = FunctionMessage(response, name="confirm_amount_and_duration")
 
@@ -115,27 +117,39 @@ def confirm_amount_and_duration(state: State):
 
 
 def get_rates(state: State):
-    """Get deposit rates for requested amount and duration."""
+    """Get deposit rates for the requested amount and duration."""
     min_r, max_r = get_deposit_rates_range(state['deposit_amount'], state['deposit_duration'])
-    msg = FunctionMessage(content=f"Для данных условий размещения текущие ставки {min_r}-{max_r}% годовых. "
-                                  f"Рекоммендованная ставка {min_r}%.", name="get_rates")
-    return {"min_rate": min_r, "max_rate": max_r, "agreed_rate": min_r, "messages": [msg]}
+    msg = FunctionMessage(
+        content=f"For the given deposit conditions, current rates are {min_r}-{max_r}% per annum. "
+                f"The recommended rate is {min_r}%.",
+        name="get_rates"
+    )
+    return {
+        "min_rate": min_r,
+        "max_rate": max_r,
+        "agreed_rate": min_r,
+        "messages": [msg]
+    }
 
 
 def finalize_offer(state: State):
-    """Make a deposit summary."""
-    llm_response = llm.invoke(f"Проинформируй клиента о рамещении в коротком сообщении: "
-                              f"{state['deposit_amount']} рублей на {state['deposit_duration']} дней "
-                              f"по ставке {state['agreed_rate']}%. "
-                              f"Без дополнительных вопросов к клинету, только информирование.")
+    """Provide a deposit summary."""
+    llm_response = llm.invoke(
+        f"Inform the client briefly about the deposit: "
+        f"{state['deposit_amount']} euros for {state['deposit_duration']} days "
+        f"at a rate of {state['agreed_rate']}%. "
+        f"Do not ask additional questions, only provide information."
+    )
     return {"messages": [AIMessage(llm_response.content)]}
 
 
 # --------------- Tools ----------------
 @tool
-def get_user_free_cache() -> int:
-    """Получить объем свободных денежных средств на счетах у клиента, которые потенциально
-    могут быть размещены на депозит."""
+def get_user_free_cash() -> int:
+    """
+    Get the amount of free cash in euros available in the user's accounts
+    that can potentially be placed on deposit.
+    """
     return 1000000
 
 
@@ -143,7 +157,7 @@ if __name__ == '__main__':
     validate_required_env_vars()
     init_db_with_dummy_data()
 
-    tools = [get_user_free_cache]
+    tools = [get_user_free_cash]
     llm_with_tools = llm.bind_tools(tools)
 
     # --------------- Build workflow ----------------
@@ -188,24 +202,21 @@ if __name__ == '__main__':
     # --------------- Start test conversation ----------------
     config = {"configurable": {"thread_id": time.strftime('%Y%m%d_%H%M%S')}}
 
-    # mocked_user_messages = [
-    #     HumanMessage("Добрый день!"),
-    #     HumanMessage("Хотели бы разместить депозит у вас в банке. Какие сейчас ставки?"),
-    #     HumanMessage("На 5 дней рассматриваем размещение. Что можете преджодить?"),
-    #     HumanMessage("Давайте разместим всю сумму наших текущих остатов на счетах. Можем даже на 10 дней!"),
-    # ]
     mocked_user_messages = [
-        HumanMessage("Уточните, пожалуйста, текущие остатки на наших счетах."),
-        HumanMessage("Да, давайте разместим всю сумму наших текущих остатов на счетах."),
-        HumanMessage("Давайте сделаем на 10 дней."),
+        HumanMessage("Please clarify the current balances on our accounts."),
+        HumanMessage("Yes, let's deposit the entire amount currently available in our accounts."),
+        HumanMessage("Let's do it for 10 days."),
     ]
-    system_msg = SystemMessage("Ты ассистент ответственный за продоставление ставок размещения "
-                               "денежных средств компании на депозит нашего банка Сбер. "
-                               "Твоя задача получить от клиента сумму депозита и срок, на который клиент хочет разместить "
-                               "депозит. Любая сумма до 100000000 и любой срок от 1 дня до 365 дней. "
-                               "Разговаривай только на русском языке. Твоя цель только получить данные. "
-                               "Избегай предоставления консультаций или ставок клиенту - "
-                               "ставки известны только после того как сумма и период депозита известны.")
+
+    system_msg = SystemMessage(
+        "You are an assistant responsible for providing rates for depositing company funds into our bank. "
+        "Your task is to obtain from the client the deposit amount and the duration for "
+        "which they wish to deposit the funds. "
+        "Any amount up to 100,000,000 and any duration from 1 to 365 days is allowed. "
+        "Your goal is solely to collect the necessary data. "
+        "Avoid providing advice or specific rates to the client—rates will only be available "
+        "once the deposit amount and duration are confirmed."
+    )
 
     for i, user_msg in enumerate(mocked_user_messages):
 
@@ -227,8 +238,8 @@ if __name__ == '__main__':
     print(f'=============================== User Approval Request ===============================')
     print(f'Name: {interr["name"]}', end='\n\n')
     print(interr['question'])
-    print(f"\t - Размещение {interr['deposit_amount']} рублей")
-    print(f"\t - Сроком на {interr['deposit_duration']} дней")
+    print(f"\t - Deposit amount: {interr['deposit_amount']} euros")
+    print(f"\t - Duration: {interr['deposit_duration']} days")
 
     human_command = Command(resume={"deposit_amount": 505000})
     events = graph.stream(human_command, config=config, stream_mode="values")

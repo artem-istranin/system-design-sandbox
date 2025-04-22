@@ -3,7 +3,6 @@ import os
 def validate_required_env_vars():
     required_env_vars = [
         'LANGSMITH_API_KEY',
-        'OPENAI_API_KEY',
         'ANTHROPIC_API_KEY',
         'TAVILY_API_KEY'
     ]

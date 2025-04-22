@@ -6,7 +6,7 @@ DB_FILE = Path(__file__).parent / "deposit_rates.db"
 
 
 def init_db_with_dummy_data():
-    # todo: считать в копейках вместо рублей
+    # todo: make in cents instead of euros
     DUMMY_DATA = [
         # 0-29 days
         (0, 100000, 0, 29, 16.0, 16.4),
@@ -61,9 +61,8 @@ def init_db_with_dummy_data():
     conn.close()
 
 
-# Function to find deposit rate for given amount and duration
 def get_deposit_rates_range(amount, duration):
-    deposit_rates_db_conn = sqlite3.connect(DB_FILE)  # todo: connect only once
+    deposit_rates_db_conn = sqlite3.connect(DB_FILE)
     cursor = deposit_rates_db_conn.cursor()
     cursor.execute("""
     SELECT MIN(min_rate) AS min_rate, MAX(max_rate) AS max_rate
