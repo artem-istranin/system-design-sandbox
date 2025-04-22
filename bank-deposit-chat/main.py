@@ -1,5 +1,6 @@
 import time
 from typing import Annotated
+from typing_extensions import TypedDict
 
 from dotenv import load_dotenv
 from langchain_anthropic import ChatAnthropic
@@ -11,11 +12,12 @@ from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode, tools_condition
 from langgraph.types import Command, interrupt
 from pydantic import BaseModel, Field
-from typing_extensions import TypedDict
 
-from deposit_rates_db import get_deposit_rates_range
+from deposit_rates_db import get_deposit_rates_range, init_db_with_dummy_data
+from utils import validate_required_env_vars
 
 load_dotenv()
+
 llm = ChatAnthropic(model='claude-3-5-haiku-latest')
 
 
@@ -45,11 +47,9 @@ class DepositConditions(BaseModel):
     )
 
 
-deposit_conditions_llm = llm.with_structured_output(DepositConditions)
-
-
 def extract_amount_and_duration(state: State):
     """Extract deposit amount and duration from user message."""
+    deposit_conditions_llm = llm.with_structured_output(DepositConditions)
     deposit_cond_check = deposit_conditions_llm.invoke(state["messages"])
 
     extraction_res = {}
@@ -139,97 +139,101 @@ def get_user_free_cache() -> int:
     return 1000000
 
 
-tools = [get_user_free_cache]
-llm_with_tools = llm.bind_tools(tools)
+if __name__ == '__main__':
+    validate_required_env_vars()
+    init_db_with_dummy_data()
 
-# --------------- Build workflow ----------------
-graph_builder = StateGraph(State)
+    tools = [get_user_free_cache]
+    llm_with_tools = llm.bind_tools(tools)
 
-# Add nodes
-graph_builder.add_node("chatbot", chatbot)
-graph_builder.add_node("extract_amount_and_duration", extract_amount_and_duration)
-graph_builder.add_node("confirm_amount_and_duration", confirm_amount_and_duration)
-graph_builder.add_node("get_rates", get_rates)
-graph_builder.add_node("finalize_offer", finalize_offer)
-graph_builder.add_node("tools", ToolNode(tools=tools))
+    # --------------- Build workflow ----------------
+    graph_builder = StateGraph(State)
 
-# Add edges to connect nodes
-graph_builder.add_edge(START, "extract_amount_and_duration")
-graph_builder.add_conditional_edges(
-    "extract_amount_and_duration",
-    is_amount_and_duration_provided,
-    {
-        'Amount and duration are provided': "confirm_amount_and_duration",
-        'Not enough info': "chatbot"
-    }
-)
-graph_builder.add_conditional_edges(
-    "chatbot",
-    tools_condition,
-)
-graph_builder.add_edge("tools", "chatbot")
-graph_builder.add_edge("confirm_amount_and_duration", "get_rates")
-graph_builder.add_edge("get_rates", "finalize_offer")
-graph_builder.add_edge("finalize_offer", END)
+    # Add nodes
+    graph_builder.add_node("chatbot", chatbot)
+    graph_builder.add_node("extract_amount_and_duration", extract_amount_and_duration)
+    graph_builder.add_node("confirm_amount_and_duration", confirm_amount_and_duration)
+    graph_builder.add_node("get_rates", get_rates)
+    graph_builder.add_node("finalize_offer", finalize_offer)
+    graph_builder.add_node("tools", ToolNode(tools=tools))
 
-# Compile
-memory = MemorySaver()
-graph = graph_builder.compile(checkpointer=memory)
-
-# --------------- Visualize workflow ----------------
-png_bytes = graph.get_graph().draw_mermaid_png()
-with open("graph.png", "wb") as f:
-    f.write(png_bytes)
-
-# --------------- Start test conversation ----------------
-config = {"configurable": {"thread_id": time.strftime('%Y%m%d_%H%M%S')}}
-
-# mocked_user_messages = [
-#     HumanMessage("Добрый день!"),
-#     HumanMessage("Хотели бы разместить депозит у вас в банке. Какие сейчас ставки?"),
-#     HumanMessage("На 5 дней рассматриваем размещение. Что можете преджодить?"),
-#     HumanMessage("Давайте разместим всю сумму наших текущих остатов на счетах. Можем даже на 10 дней!"),
-# ]
-mocked_user_messages = [
-    HumanMessage("Уточните, пожалуйста, текущие остатки на наших счетах."),
-    HumanMessage("Да, давайте разместим всю сумму наших текущих остатов на счетах."),
-    HumanMessage("Давайте сделаем на 10 дней."),
-]
-system_msg = SystemMessage("Ты ассистент ответственный за продоставление ставок размещения "
-                           "денежных средств компании на депозит нашего банка Сбер. "
-                           "Твоя задача получить от клиента сумму депозита и срок, на который клиент хочет разместить "
-                           "депозит. Любая сумма до 100000000 и любой срок от 1 дня до 365 дней. "
-                           "Разговаривай только на русском языке. Твоя цель только получить данные. "
-                           "Избегай предоставления консультаций или ставок клиенту - "
-                           "ставки известны только после того как сумма и период депозита известны.")
-
-for i, user_msg in enumerate(mocked_user_messages):
-
-    next_messages = []
-    if i == 0:
-        next_messages.append(system_msg)
-    next_messages.append(user_msg)
-
-    events = graph.stream(
-        {"messages": next_messages},
-        config=config,
-        stream_mode="values",
+    # Add edges to connect nodes
+    graph_builder.add_edge(START, "extract_amount_and_duration")
+    graph_builder.add_conditional_edges(
+        "extract_amount_and_duration",
+        is_amount_and_duration_provided,
+        {
+            'Amount and duration are provided': "confirm_amount_and_duration",
+            'Not enough info': "chatbot"
+        }
     )
-    for event in events:
+    graph_builder.add_conditional_edges(
+        "chatbot",
+        tools_condition,
+    )
+    graph_builder.add_edge("tools", "chatbot")
+    graph_builder.add_edge("confirm_amount_and_duration", "get_rates")
+    graph_builder.add_edge("get_rates", "finalize_offer")
+    graph_builder.add_edge("finalize_offer", END)
+
+    # Compile
+    memory = MemorySaver()
+    graph = graph_builder.compile(checkpointer=memory)
+
+    # --------------- Visualize workflow ----------------
+    # png_bytes = graph.get_graph().draw_mermaid_png()
+    # with open("graph.png", "wb") as f:
+    #     f.write(png_bytes)
+
+    # --------------- Start test conversation ----------------
+    config = {"configurable": {"thread_id": time.strftime('%Y%m%d_%H%M%S')}}
+
+    # mocked_user_messages = [
+    #     HumanMessage("Добрый день!"),
+    #     HumanMessage("Хотели бы разместить депозит у вас в банке. Какие сейчас ставки?"),
+    #     HumanMessage("На 5 дней рассматриваем размещение. Что можете преджодить?"),
+    #     HumanMessage("Давайте разместим всю сумму наших текущих остатов на счетах. Можем даже на 10 дней!"),
+    # ]
+    mocked_user_messages = [
+        HumanMessage("Уточните, пожалуйста, текущие остатки на наших счетах."),
+        HumanMessage("Да, давайте разместим всю сумму наших текущих остатов на счетах."),
+        HumanMessage("Давайте сделаем на 10 дней."),
+    ]
+    system_msg = SystemMessage("Ты ассистент ответственный за продоставление ставок размещения "
+                               "денежных средств компании на депозит нашего банка Сбер. "
+                               "Твоя задача получить от клиента сумму депозита и срок, на который клиент хочет разместить "
+                               "депозит. Любая сумма до 100000000 и любой срок от 1 дня до 365 дней. "
+                               "Разговаривай только на русском языке. Твоя цель только получить данные. "
+                               "Избегай предоставления консультаций или ставок клиенту - "
+                               "ставки известны только после того как сумма и период депозита известны.")
+
+    for i, user_msg in enumerate(mocked_user_messages):
+
+        next_messages = []
+        if i == 0:
+            next_messages.append(system_msg)
+        next_messages.append(user_msg)
+
+        events = graph.stream(
+            {"messages": next_messages},
+            config=config,
+            stream_mode="values",
+        )
+        for event in events:
+            if "messages" in event:
+                event["messages"][-1].pretty_print()
+
+    interr = graph.get_state(config)[-1][0].interrupts[0].value
+    print(f'=============================== User Approval Request ===============================')
+    print(f'Name: {interr["name"]}', end='\n\n')
+    print(interr['question'])
+    print(f"\t - Размещение {interr['deposit_amount']} рублей")
+    print(f"\t - Сроком на {interr['deposit_duration']} дней")
+
+    human_command = Command(resume={"deposit_amount": 505000})
+    events = graph.stream(human_command, config=config, stream_mode="values")
+    for i, event in enumerate(events):
+        if i == 0:
+            continue  # skip first message after interruption to not repeat the last message before interruption
         if "messages" in event:
             event["messages"][-1].pretty_print()
-
-interr = graph.get_state(config)[-1][0].interrupts[0].value
-print(f'=============================== User Approval Request ===============================')
-print(f'Name: {interr["name"]}', end='\n\n')
-print(interr['question'])
-print(f"\t - Размещение {interr['deposit_amount']} рублей")
-print(f"\t - Сроком на {interr['deposit_duration']} дней")
-
-human_command = Command(resume={"deposit_amount": 505000})
-events = graph.stream(human_command, config=config, stream_mode="values")
-for i, event in enumerate(events):
-    if i == 0:
-        continue  # skip first message after interruption to not repeat the last message before interruption
-    if "messages" in event:
-        event["messages"][-1].pretty_print()
